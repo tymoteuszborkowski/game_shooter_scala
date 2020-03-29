@@ -3,9 +3,9 @@ package pl.tymoteuszborkowski.network.client
 import java.io.IOException
 
 import com.esotericsoftware.kryonet.{Client, EndPoint}
+import pl.tymoteuszborkowski.GameScreen
 import pl.tymoteuszborkowski.common.Network
 import pl.tymoteuszborkowski.network.common.Packets
-import pl.tymoteuszborkowski.screen.GameScreen
 
 class GameClient(ipAddress: String, tcpPort: Int, udpPort: Int, gameScreen: GameScreen) {
 

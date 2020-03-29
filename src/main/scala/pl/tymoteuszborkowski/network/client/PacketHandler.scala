@@ -30,14 +30,14 @@ class PacketHandler extends Listener {
   }
 
   private def handleAddPlayer(packet: Packets.AddPlayer): Unit = {
-    val newPlayer = new Player(packet.x, packet.y, packet.id)
-    client.game.players.add(newPlayer)
-    if (packet.id == client.getId) client.game.player = newPlayer
-    if (MainGame.DEBUGGING) System.out.println(
-      "Received Packet: " + "AddPlayer\n" +
-        "x: " + packet.x + "\n" +
-        "y: " + packet.y + "\n" +
-        "id: " + packet.id + "\n")
+//    val newPlayer = new Player(packet.x, packet.y, packet.id)
+//    client.game.players.add(newPlayer)
+//    if (packet.id == client.getId) client.game.player = newPlayer
+//    if (MainGame.DEBUGGING) System.out.println(
+//      "Received Packet: " + "AddPlayer\n" +
+//        "x: " + packet.x + "\n" +
+//        "y: " + packet.y + "\n" +
+//        "id: " + packet.id + "\n")
   }
 
 }
