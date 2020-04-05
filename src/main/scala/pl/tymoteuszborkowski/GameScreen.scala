@@ -12,11 +12,11 @@ import pl.tymoteuszborkowski.rendering.ContainerRenderer
 
 class GameScreen(val viewport: Viewport,
                  val shapeRenderer: ShapeRenderer,
-                 val playersContainer: PlayersContainer,
+                 val playersContainer: PlayersContainer[Player],
                  val bulletsContainer: Container[Bullet],
                  val arena: Arena,
-                 val respawner: Respawner,
-                 val collider: Collider,
+                 val respawner: Respawner[Player],
+                 val collider: Collider[Player],
                  val playersRenderer: ContainerRenderer[Player],
                  val bulletsRenderer: ContainerRenderer[Bullet]) extends ScreenAdapter {
 

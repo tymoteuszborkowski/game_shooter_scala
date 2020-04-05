@@ -10,7 +10,7 @@ object Respawner {
   private val random = new Random
 }
 
-class Respawner(val playersContainer: Container[Player],
+class Respawner[PlayerType <: Player](val playersContainer: Container[PlayerType],
                 val widthBound: Float,
                 val heightBound: Float) {
 
@@ -18,9 +18,13 @@ class Respawner(val playersContainer: Container[Player],
     playersContainer
       .stream
       .filter(player => player.getShip.isEmpty)
-      .forEach(player => player.setShip(new Ship(player, randomRespawnPoint, 0)))
+      .forEach(respawnFor)
   }
-
+  def respawnFor(player: PlayerType): Unit = {
+    player.setShip(new Ship(player, randomRespawnPoint, 0))
+  }
   private def randomRespawnPoint =
     new Vector2(Respawner.random.nextInt(widthBound.round), Respawner.random.nextInt(heightBound.round))
+
+
 }

@@ -1,5 +1,7 @@
 package pl.tymoteuszborkowski.domain
 
+import java.util.UUID
+
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Polygon, Vector2}
 import pl.tymoteuszborkowski.utils.Vectors
@@ -11,9 +13,10 @@ object Bullet {
   private val RANGE = 400f
 }
 
-class Bullet(val shooter: Player,
+class Bullet(val id: UUID,
+             val shooter: Player,
              val startPosition: Vector2,
-             val rotation: Float) extends Visible {
+             val rotation: Float) extends Visible with Identifiable {
 
   private val shape = initializeShape()
   private var remainingRange: Float = Bullet.RANGE
@@ -37,11 +40,15 @@ class Bullet(val shooter: Player,
   }
 
   private def initializeShape(): Polygon = {
-    val shape: Polygon =  new Polygon(Bullet.VERTICES)
+    val shape: Polygon = new Polygon(Bullet.VERTICES)
     shape.setPosition(startPosition.x, startPosition.y)
     shape.setRotation(rotation)
     shape.setOrigin(0, -Ship.getMiddle.y)
 
     shape
   }
+
+  override def getId: UUID = id
+
+  def getShooterId: UUID = shooter.getId
 }

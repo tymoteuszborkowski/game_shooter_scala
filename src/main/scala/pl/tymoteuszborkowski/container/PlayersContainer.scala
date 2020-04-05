@@ -4,14 +4,14 @@ import java.util
 
 import pl.tymoteuszborkowski.domain.{Bullet, Player, Ship}
 
-class PlayersContainer(val players: util.ArrayList[Player] = new util.ArrayList[Player]())
-  extends Container[Player] {
+class PlayersContainer[PlayerType <: Player](val players: util.ArrayList[PlayerType] = new util.ArrayList[PlayerType]())
+  extends Container[PlayerType] {
 
-  def add(toAdd: Player): Unit = {
+  def add(toAdd: PlayerType): Unit = {
     players.add(toAdd)
   }
 
-  def getAll: util.ArrayList[Player] = players
+  def getAll: util.ArrayList[PlayerType] = players
 
   def update(delta: Float): Unit = {
     players.forEach((player) => player.update(delta))

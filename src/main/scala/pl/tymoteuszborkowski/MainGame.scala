@@ -1,5 +1,7 @@
 package pl.tymoteuszborkowski
 
+import java.util.UUID
+
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.FillViewport
@@ -20,14 +22,14 @@ class MainGame extends Game {
     val shapeRenderer = new ShapeRenderer
 
     val arena: Arena = new Arena(WORLD_WIDTH, WORLD_HEIGHT)
-    val player1: Player = new Player(new KeyboardControls, Color.WHITE)
-    val player2: Player = new Player(new NoopControls, Color.LIGHT_GRAY)
+    val player1: Player = new Player(UUID.randomUUID(), new KeyboardControls, Color.WHITE)
+    val player2: Player = new Player(UUID.randomUUID(), new NoopControls, Color.LIGHT_GRAY)
     val bulletsContainer: Container[Bullet] = new BulletsContainer
-    val playersContainer: PlayersContainer = new PlayersContainer
+    val playersContainer: PlayersContainer[Player] = new PlayersContainer
     playersContainer.add(player1)
     playersContainer.add(player2)
-    val respawner: Respawner = new Respawner(playersContainer, WORLD_WIDTH, WORLD_HEIGHT)
-    val collider: Collider = new Collider(playersContainer, bulletsContainer)
+    val respawner: Respawner[Player] = new Respawner(playersContainer, WORLD_WIDTH, WORLD_HEIGHT)
+    val collider: Collider[Player] = new Collider(playersContainer, bulletsContainer)
 
     val bulletsRenderer: ContainerRenderer[Bullet] =
       new ContainerRenderer[Bullet](bulletsContainer, bullet => new VisibleRenderer(bullet))

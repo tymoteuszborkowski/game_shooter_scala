@@ -3,7 +3,7 @@ package pl.tymoteuszborkowski.managers
 import pl.tymoteuszborkowski.container.Container
 import pl.tymoteuszborkowski.domain.{Bullet, Player}
 
-class Collider(val playersContainer: Container[Player],
+class Collider[PlayerType <: Player](val playersContainer: Container[PlayerType],
                val bulletsContainer: Container[Bullet]) {
 
   def checkCollisions(): Unit = {

@@ -2,11 +2,12 @@ package pl.tymoteuszborkowski.domain
 
 import com.badlogic.gdx.graphics.Color
 import pl.tymoteuszborkowski.controls.Controls
+import java.util.UUID
 
-
-class Player(val controls: Controls, val color: Color) {
+class Player(val id: UUID, val controls: Controls, val color: Color)  extends Identifiable {
 
   private var ship: Option[Ship] = Option.empty
+
 
   def setShip(ship: Ship): Unit = {
     this.ship = Option(ship)
@@ -27,4 +28,8 @@ class Player(val controls: Controls, val color: Color) {
   def getShip: Option[Ship] = ship
 
   def getColor: Color = color
+
+  import java.util.UUID
+
+  def getId: UUID = id
 }

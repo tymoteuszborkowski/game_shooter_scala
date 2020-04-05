@@ -1,6 +1,7 @@
 package pl.tymoteuszborkowski.domain
 
 import java.time.{Duration, Instant}
+import java.util.UUID
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Polygon, Vector2}
@@ -48,7 +49,7 @@ class Ship(val owner: Player,
   def obtainBullet: Option[Bullet] = {
     if (canShoot && wantsToShoot) {
       lastShot = Instant.now
-      return Option(new Bullet(owner, bulletStartingPosition, shape.getRotation))
+      return Option(new Bullet(UUID.randomUUID(), owner, bulletStartingPosition, shape.getRotation))
     }
     Option.empty[Bullet]
   }
@@ -98,4 +99,5 @@ class Ship(val owner: Player,
 
     shape
   }
+
 }

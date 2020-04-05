@@ -9,9 +9,21 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/project" />
+            <option value="$PROJECT_DIR$/server" />
           </set>
         </option>
         <option name="sbtVersion" value="1.2.7" />
+      </SbtProjectSettings>
+      <SbtProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/server" />
+            <option value="$PROJECT_DIR$/server/project" />
+          </set>
+        </option>
+        <option name="sbtVersion" value="1.2.8" />
+        <option name="useQualifiedModuleNames" value="true" />
       </SbtProjectSettings>
     </option>
   </component>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="sbt 1" modules="game_shooter_scala-master_607,pl_tymoteuszborkowski" />
+    <profile name="sbt 1" modules="game_shooter_scala,game_shooter_scala-master_607,pl_tymoteuszborkowski,server,server_1360" />
   </component>
 </project>
