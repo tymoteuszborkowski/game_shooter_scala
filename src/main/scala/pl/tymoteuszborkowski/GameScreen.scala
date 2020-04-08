@@ -7,7 +7,7 @@ import com.badlogic.gdx.{Gdx, ScreenAdapter}
 import pl.tymoteuszborkowski.container.{Container, PlayersContainer}
 import pl.tymoteuszborkowski.domain.{Arena, Bullet, Player}
 import pl.tymoteuszborkowski.managers.{Collider, Respawner}
-import pl.tymoteuszborkowski.rendering.ContainerRenderer
+import pl.tymoteuszborkowski.client.rendering.ContainerRenderer
 
 
 class GameScreen(val viewport: Viewport,

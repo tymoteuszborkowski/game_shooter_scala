@@ -6,7 +6,11 @@ scalaVersion := "2.12.8"
 
 lazy val core = project in file(".")
 lazy val server = project in file("./server")
-val a =  server.dependsOn(core)
+lazy val client = project in file("./client")
+val a =  server
+  .dependsOn(core)
+
+val b = core.aggregate(client)
 
 libraryDependencies ++= Seq(
   "com.badlogicgames.gdx" % "gdx-backend-lwjgl" % "1.9.10",

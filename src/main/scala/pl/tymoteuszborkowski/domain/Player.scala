@@ -1,10 +1,11 @@
 package pl.tymoteuszborkowski.domain
 
-import com.badlogic.gdx.graphics.Color
-import pl.tymoteuszborkowski.controls.Controls
 import java.util.UUID
 
-class Player(val id: UUID, val controls: Controls, val color: Color)  extends Identifiable {
+import com.badlogic.gdx.graphics.Color
+import pl.tymoteuszborkowski.controls.Controls
+
+class Player(val id: UUID, val controls: Controls, val color: Color) extends Identifiable {
 
   private var ship: Option[Ship] = Option.empty
 
@@ -32,4 +33,9 @@ class Player(val id: UUID, val controls: Controls, val color: Color)  extends Id
   import java.util.UUID
 
   def getId: UUID = id
+}
+
+object Player {
+  val PossibleColors: List[Color] = List(Color.WHITE, Color.GRAY, Color.BLUE, Color.GREEN,
+    Color.ORANGE, Color.LIGHT_GRAY)
 }
