@@ -1,10 +1,10 @@
-package pl.tymoteuszborkowski.controls
+package pl.tymoteuszborkowski.client.controls
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys._
+import pl.tymoteuszborkowski.controls.Controls
 
 class KeyboardControls extends Controls {
-
-  import com.badlogic.gdx.Gdx
 
   def forward: Boolean = Gdx.input.isKeyPressed(UP)
 

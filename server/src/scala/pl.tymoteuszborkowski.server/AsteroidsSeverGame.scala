@@ -1,9 +1,11 @@
+package pl.tymoteuszborkowski.server
+
 import com.badlogic.gdx.Game
 import connection.SocketIoServer
-import pl.tymoteuszborkowski.MainGame._
 import pl.tymoteuszborkowski.container.{BulletsContainer, PlayersContainer}
 import pl.tymoteuszborkowski.domain.{Arena, RemotePlayer}
 import pl.tymoteuszborkowski.managers.{Collider, Respawner}
+import pl.tymoteuszborkowski.client.MainGame._
 
 class AsteroidsSeverGame extends Game {
 

@@ -1,4 +1,4 @@
-package pl.tymoteuszborkowski.rendering
+package pl.tymoteuszborkowski.client.rendering
 
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer

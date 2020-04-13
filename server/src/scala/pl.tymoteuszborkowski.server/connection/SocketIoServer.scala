@@ -1,4 +1,4 @@
-package connection
+package pl.tymoteuszborkowski.server.connection
 
 import java.io.IOException
 import java.util

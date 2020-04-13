@@ -1,4 +1,4 @@
-package connection
+package pl.tymoteuszborkowski.server.connection
 
 import java.util.UUID
 import java.util.function.{BiConsumer, Consumer}

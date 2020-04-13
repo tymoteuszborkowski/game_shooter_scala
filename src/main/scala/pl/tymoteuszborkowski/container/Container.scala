@@ -12,7 +12,7 @@ trait Container[T <: Identifiable] {
   def add(toAdd: T): Unit
 
   def getAll: util.ArrayList[T]
-
+ 
   def stream: util.stream.Stream[T] = getAll.stream()
 
   def update(delta: Float): Unit

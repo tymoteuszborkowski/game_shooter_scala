@@ -1,3 +1,5 @@
+package pl.tymoteuszborkowski.server
+
 import com.badlogic.gdx.ScreenAdapter
 import connection.Server
 import pl.tymoteuszborkowski.container.{BulletsContainer, PlayersContainer}

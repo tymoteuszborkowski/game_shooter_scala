@@ -1,4 +1,4 @@
-package pl.tymoteuszborkowski
+package pl.tymoteuszborkowski.client
 
 import com.badlogic.gdx.backends.lwjgl.{LwjglApplication, LwjglApplicationConfiguration}
 
