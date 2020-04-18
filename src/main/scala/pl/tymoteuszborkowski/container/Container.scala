@@ -15,7 +15,7 @@ trait Container[T <: Identifiable] {
  
   def stream: util.stream.Stream[T] = getAll.stream()
 
-  def update(delta: Float): Unit
+  def update(): Unit
 
   def getById(id: UUID): Optional[T] = stream.filter(thing => thing.isIdEqual(id)).findAny
 

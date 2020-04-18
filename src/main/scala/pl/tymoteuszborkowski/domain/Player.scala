@@ -5,7 +5,9 @@ import java.util.UUID
 import com.badlogic.gdx.graphics.Color
 import pl.tymoteuszborkowski.controls.Controls
 
-class Player(val id: UUID, val controls: Controls, val color: Color) extends Identifiable {
+class Player(val id: UUID,
+             var controls: Controls,
+             val color: Color) extends Identifiable {
 
   private var ship: Option[Ship] = Option.empty
 
@@ -18,10 +20,19 @@ class Player(val id: UUID, val controls: Controls, val color: Color) extends Ide
     this.ship = Option.empty
   }
 
-  def update(delta: Float): Unit = {
+  def update(): Unit = {
     ship match {
-      case Some(value) => value.control(controls, delta)
-        value.update(delta)
+      case Some(value) => value.update()
+      case None =>
+    }
+  }
+
+  def move(delta: Float): Unit = {
+    ship match {
+      case Some(value) =>
+        value.control(controls, delta)
+        value.move(delta)
+        value.update()
       case None =>
     }
   }
@@ -33,6 +44,10 @@ class Player(val id: UUID, val controls: Controls, val color: Color) extends Ide
   import java.util.UUID
 
   def getId: UUID = id
+
+  def getControls: Controls = controls
+
+  def setControls(controls: Controls) = this.controls = controls
 }
 
 object Player {

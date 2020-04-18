@@ -40,10 +40,12 @@ class AsteroidsServerScreen(val server: Server,
   override def render(delta: Float): Unit = {
     respawner.respawn()
     collider.checkCollisions()
-    playersContainer.update(delta)
+    playersContainer.move(delta)
+    playersContainer.update()
     playersContainer.streamShips.forEach(arena.ensurePlacementWithinBounds)
     playersContainer.obtainAndStreamBullets.forEach(bulletsContainer.add)
-    bulletsContainer.update(delta)
+    bulletsContainer.move(delta)
+    bulletsContainer.update()
     bulletsContainer.stream.forEach(arena.ensurePlacementWithinBounds)
     server.broadcast(GameStateMapper.fromState(playersContainer, bulletsContainer))
   }

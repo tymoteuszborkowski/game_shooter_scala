@@ -12,8 +12,11 @@ import org.slf4j.LoggerFactory
 import pl.tymoteuszborkowski.connection.Event
 import pl.tymoteuszborkowski.connection.Event.Event
 import pl.tymoteuszborkowski.dto._
+import pl.tymoteuszborkowski.dto.mapper.IndexedDtoMapper
+import pl.tymoteuszborkowski.server.connection.synchronization.StateIndexByClient
+import pl.tymoteuszborkowski.utils.Delay
 
-class SocketIoServer extends Server {
+class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClient) extends Server {
 
   private val logger = LoggerFactory.getLogger(classOf[SocketIoServer])
   private var socketio: SocketIOServer = _
@@ -21,8 +24,8 @@ class SocketIoServer extends Server {
   private var playerSentControlsHandler: BiConsumer[UUID, ControlsDto] = _
   private var playerLeftHandler: Consumer[UUID] = _
 
-  def this(host: String, port: Int) = {
-    this()
+  def this(host: String, port: Int, stateIndexByClient: StateIndexByClient, delay: Delay) = {
+    this(delay, stateIndexByClient)
     var config = new Configuration()
     config.setHostname(host)
     config.setPort(port)
@@ -51,14 +54,18 @@ class SocketIoServer extends Server {
   }
 
   def broadcast(gameState: GameStateDto): Unit = {
-    sendEvent(socketio.getBroadcastOperations, Event.GAME_STATE_SENT, gameState)
+    socketio.getAllClients.stream.forEach(client => {
+      val indexedDto: Dto =
+        IndexedDtoMapper.wrapWithIndex(gameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto]
+      sendEvent(client, Event.GAME_STATE_SENT, indexedDto)
+    })
   }
 
   def sendIntroductoryDataToConnected(connected: PlayerDto, gameState: GameStateDto): Unit = {
     socketio
       .getAllClients
       .stream
-      .filter((client: SocketIOClient) => client.getSessionId == UUID.fromString(connected.getId))
+      .filter((client: SocketIOClient) => client.getSessionId equals UUID.fromString(connected.getId))
       .findAny
       .ifPresent((client: SocketIOClient) =>
         sendEvent(client, Event.PLAYER_CONNECTED, new IntroductoryStateDto(connected, gameState)))
@@ -84,12 +91,9 @@ class SocketIoServer extends Server {
     })
 
     addEventListener(Event.CONTROLS_SENT, (client: SocketIOClient, json: String, ackSender: AckRequest) => {
-      def foo(client: SocketIOClient, json: String, ackSender: AckRequest) = {
-        val dto = Dto.fromJsonString(json, classOf[ControlsDto])
-        playerSentControlsHandler.accept(client.getSessionId, dto)
-      }
-
-      foo(client, json, ackSender)
+      val indexedDto = Dto.fromJsonString(json, classOf[IndexedControlsDto])
+      stateIndexByClient.setIndexFor(client.getSessionId, indexedDto.getIndex)
+      playerSentControlsHandler.accept(client.getSessionId, indexedDto.getDto)
     })
 
     socketio.addDisconnectListener((client: SocketIOClient) => {
@@ -139,7 +143,7 @@ class SocketIoServer extends Server {
   }
 
   private def sendEvent(client: ClientOperations, eventName: Event, data: Dto): Unit = {
-    client.sendEvent(eventName.toString, data.toJsonString)
+    delay.execute(() => client.sendEvent(eventName.toString, data.toJsonString))
   }
 
 }

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
 import com.fasterxml.jackson.databind.ObjectMapper
 
 @JsonCreator
-class GameStateDto(@JsonProperty("players") players: util.List[PlayerDto],
+case class GameStateDto(@JsonProperty("players") players: util.List[PlayerDto],
                    @JsonProperty("bullets") bullets: util.List[BulletDto]) extends Dto {
 
 

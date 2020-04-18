@@ -11,6 +11,7 @@ lazy val client = project in file("./client")
 
 lazy val a = server.dependsOn(core, client)
 lazy val b = client.dependsOn(core)
+lazy val c = core.aggregate(server, client)
 
 libraryDependencies ++= Seq(
   "com.badlogicgames.gdx" % "gdx-backend-lwjgl" % "1.9.10",

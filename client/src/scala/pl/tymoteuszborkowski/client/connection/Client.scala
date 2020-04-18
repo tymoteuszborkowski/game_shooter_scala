@@ -19,4 +19,8 @@ trait Client {
   def sendControls(controlsDto: ControlsDto): Unit
 
   def isConnected: Boolean
+
+  def lockEventListeners(): Unit
+
+  def unlockEventListeners(): Unit
 }

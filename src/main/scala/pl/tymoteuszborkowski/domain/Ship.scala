@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Polygon, Vector2}
 import pl.tymoteuszborkowski.controls.Controls
 import pl.tymoteuszborkowski.utils.Vectors
+import com.badlogic.gdx.math.Vector2
 
 
 object Ship {
@@ -41,9 +42,12 @@ class Ship(val owner: Player,
     wantsToShoot = controls.shoot
   }
 
-  def update(delta: Float): Unit = {
-    applyMovement(delta)
+  def update(): Unit = {
     applyShootingPossibility()
+  }
+
+  def move(delta: Float): Unit = {
+    applyMovement(delta)
   }
 
   def obtainBullet: Option[Bullet] = {
@@ -98,6 +102,18 @@ class Ship(val owner: Player,
     shape.setRotation(startingRotation)
 
     shape
+  }
+
+  def getVelocity: Vector2 = velocity
+
+  def setVelocity(velocity: Vector2): Unit = {
+    this.velocity.set(velocity)
+  }
+
+  def getRotationVelocity: Float = rotationVelocity
+
+  def setRotationVelocity(rotationVelocity: Float): Unit = {
+    this.rotationVelocity = rotationVelocity
   }
 
 }

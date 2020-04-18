@@ -6,6 +6,8 @@ import pl.tymoteuszborkowski.container.{BulletsContainer, PlayersContainer}
 import pl.tymoteuszborkowski.domain.{Arena, RemotePlayer}
 import pl.tymoteuszborkowski.managers.{Collider, Respawner}
 import pl.tymoteuszborkowski.client.MainGame._
+import pl.tymoteuszborkowski.server.connection.synchronization.StateIndexByClient
+import pl.tymoteuszborkowski.utils.Delay
 
 class AsteroidsSeverGame extends Game {
 
@@ -20,7 +22,7 @@ class AsteroidsSeverGame extends Game {
     val env = System.getenv
     val host = env.getOrDefault("HOST", "localhost")
     val port = env.getOrDefault("PORT", "8080").toInt
-    val server = new SocketIoServer(host, port)
+    val server = new SocketIoServer(host, port, new StateIndexByClient(), new Delay(100))
     asteroids = new AsteroidsServerScreen(server, playersContainer, bulletsContainer, arena, respawner, collider)
     setScreen(asteroids)
   }

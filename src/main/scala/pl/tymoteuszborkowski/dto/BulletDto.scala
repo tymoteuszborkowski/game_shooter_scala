@@ -3,7 +3,7 @@ package pl.tymoteuszborkowski.dto
 import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
 
 @JsonCreator
-class BulletDto(@JsonProperty("id") id: String,
+case class BulletDto(@JsonProperty("id") id: String,
                 @JsonProperty("x") x: Float,
                 @JsonProperty("y") y: Float,
                 @JsonProperty("rotation") rotation: Float,

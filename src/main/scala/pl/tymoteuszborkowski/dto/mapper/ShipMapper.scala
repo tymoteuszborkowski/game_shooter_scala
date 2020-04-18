@@ -8,7 +8,8 @@ object ShipMapper {
 
   def fromShip(ship: Ship): ShipDto = {
     val shipPosition = ship.getPosition
-    new ShipDto(shipPosition.x, shipPosition.y, ship.getRotation)
+    val velocity = ship.getVelocity
+    ShipDto(shipPosition.x, shipPosition.y, ship.getRotation, velocity.x, velocity.y, ship.getRotationVelocity)
   }
 
   def fromDto(dto: ShipDto, owner: Player): Ship = {
@@ -19,7 +20,10 @@ object ShipMapper {
   def updateByDto(ship: Ship, dto: ShipDto): Unit = {
     ship.setPosition(new Vector2(dto.getX, dto.getY))
     ship.setRotation(dto.getRotation)
+    ship.setVelocity(new Vector2(dto.getVelocityX, dto.getVelocityY))
+    ship.setRotationVelocity(dto.getRotationVelocity)
   }
+
 
 
 }

@@ -13,8 +13,12 @@ class PlayersContainer[PlayerType <: Player](val players: util.ArrayList[PlayerT
 
   def getAll: util.ArrayList[PlayerType] = players
 
-  def update(delta: Float): Unit = {
-    players.forEach((player) => player.update(delta))
+  def update(): Unit = {
+    players.forEach((player) => player.update())
+  }
+
+  def move(delta: Float): Unit = {
+    players.forEach((player) => player.move(delta))
   }
 
   def streamShips: util.stream.Stream[Ship] =
