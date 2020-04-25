@@ -9,8 +9,8 @@ import pl.tymoteuszborkowski.utils.Vectors
 
 object Bullet {
   private val VERTICES = Array[Float](0, 0, 2, 0, 2, 2, 0, 2)
-  private val SPEED = 500f
-  private val RANGE = 400f
+  private val SPEED = 200f
+  private val RANGE = 40f
 }
 
 class Bullet(val id: UUID,
