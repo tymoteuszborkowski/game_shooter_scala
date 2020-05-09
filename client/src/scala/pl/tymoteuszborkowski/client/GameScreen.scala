@@ -13,6 +13,7 @@ import pl.tymoteuszborkowski.domain.{Arena, Bullet, Player}
 import pl.tymoteuszborkowski.dto.mapper.{BulletMapper, ControlsMapper, GameStateMapper, PlayerMapper}
 import pl.tymoteuszborkowski.dto.{BulletDto, PlayerDto}
 import pl.tymoteuszborkowski.utils.Randomize
+import pl.tymoteuszborkowski.vfc.{Zone, ZoneGenerator}
 
 import scala.collection.JavaConverters._
 
@@ -25,7 +26,8 @@ class GameScreen(val localControls: Controls,
                  val playersRenderer: ContainerRenderer[Player],
                  val bulletsRenderer: ContainerRenderer[Bullet],
                  val localStateSynchronizer: LocalStateSynchronizer,
-                 val arena: Arena) extends ScreenAdapter {
+                 val arena: Arena,
+                 val zones: Array[Zone]) extends ScreenAdapter {
 
   var localPlayer: Player = _
 
@@ -77,6 +79,10 @@ class GameScreen(val localControls: Controls,
           .getById(playerDto.getId)
           .ifPresent(player => PlayerMapper.updateByDto(player, playerDto)))
     })
+
+
+    // TODO VFC
+
 
     localStateSynchronizer.supplyGameState(() => GameStateMapper.fromState(playersContainer, bulletsContainer))
 

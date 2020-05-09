@@ -14,7 +14,7 @@ class PlayersContainer[PlayerType <: Player](val players: util.ArrayList[PlayerT
   def getAll: util.ArrayList[PlayerType] = players
 
   def update(): Unit = {
-    players.forEach((player) => player.update())
+    players.forEach(player => player.update())
   }
 
   def move(delta: Float): Unit = {

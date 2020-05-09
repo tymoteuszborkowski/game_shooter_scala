@@ -11,10 +11,15 @@ import io.netty.channel.ChannelHandlerContext
 import org.slf4j.LoggerFactory
 import pl.tymoteuszborkowski.connection.Event
 import pl.tymoteuszborkowski.connection.Event.Event
+import pl.tymoteuszborkowski.container.ConsistencyViewsContainer
+import pl.tymoteuszborkowski.domain.RemotePlayer
 import pl.tymoteuszborkowski.dto._
 import pl.tymoteuszborkowski.dto.mapper.IndexedDtoMapper
+import pl.tymoteuszborkowski.dto.mapper.IndexedDtoMapper.wrapWithIndex
 import pl.tymoteuszborkowski.server.connection.synchronization.StateIndexByClient
 import pl.tymoteuszborkowski.utils.Delay
+
+import scala.collection.JavaConverters._
 
 class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClient) extends Server {
 
@@ -23,6 +28,12 @@ class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClien
   private var playerJoinedHandler: Consumer[PlayerDto] = _
   private var playerSentControlsHandler: BiConsumer[UUID, ControlsDto] = _
   private var playerLeftHandler: Consumer[UUID] = _
+
+
+  //todo remove - test variables to analyze sent bytes in both methods (old and vector field consistency)
+  private var bytesSentVfc: Long = 0
+  private var bytesSentOld: Long = 0
+
 
   def this(host: String, port: Int, stateIndexByClient: StateIndexByClient, delay: Delay) = {
     this(delay, stateIndexByClient)
@@ -53,12 +64,54 @@ class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClien
     playerSentControlsHandler = handler
   }
 
-  def broadcast(gameState: GameStateDto): Unit = {
+  def broadcast(gameState: GameStateDto,
+                consistencyViewsContainer: ConsistencyViewsContainer[RemotePlayer]): Unit = {
+
     socketio.getAllClients.stream.forEach(client => {
-      val indexedDto: Dto =
-        IndexedDtoMapper.wrapWithIndex(gameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto]
-      sendEvent(client, Event.GAME_STATE_SENT, indexedDto)
+      val vfcDto = vectorFieldConsistencyBroadcastDto(gameState, consistencyViewsContainer, client)
+      val oldDto = oldBroadcastDto(gameState, client)
+
+      bytesSentVfc += vfcDto.toJsonString.getBytes.length
+      bytesSentOld += oldDto.toJsonString.getBytes.length
+
+      sendEvent(client, Event.GAME_STATE_SENT, vfcDto)
     })
+  }
+
+  def vectorFieldConsistencyBroadcastDto(gameState: GameStateDto,
+                                      consistencyViewsContainer: ConsistencyViewsContainer[RemotePlayer],
+                                         client: SocketIOClient): Dto = {
+
+      val clientViewOption = consistencyViewsContainer.consistencyViews.find(_.observer.id.equals(client.getSessionId))
+      val indexedDtoOption = clientViewOption.map { clientView =>
+        val observerId = clientView.observer.id.toString
+        val playersIdsToUpdate = clientView
+          .observedObjects
+          .filter(_.shouldUpdate())
+          .map(_.observed.id.toString)
+
+        val updatedPlayers = gameState
+          .players.asScala
+          .filter(player => playersIdsToUpdate.contains(player.id) || player.id == observerId)
+          .toList.asJava
+
+        val updatedBullets = gameState
+          .bullets
+          .asScala
+          .filter(bullet => playersIdsToUpdate.contains(bullet.shooterId) || bullet.shooterId == observerId)
+          .toList.asJava
+
+        val updatedGameState = gameState.copy(players = updatedPlayers, bullets = updatedBullets)
+        wrapWithIndex(updatedGameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto]
+      }
+
+     indexedDtoOption
+        .getOrElse(wrapWithIndex(gameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto])
+
+  }
+
+  def oldBroadcastDto(gameState: GameStateDto, client: SocketIOClient): Dto = {
+    IndexedDtoMapper.wrapWithIndex(gameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto]
   }
 
   def sendIntroductoryDataToConnected(connected: PlayerDto, gameState: GameStateDto): Unit = {
@@ -143,6 +196,10 @@ class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClien
   }
 
   private def sendEvent(client: ClientOperations, eventName: Event, data: Dto): Unit = {
+    if(eventName == Event.OTHER_PLAYER_DISCONNECTED){
+      println("Bytes summary for Vector field Consistency model: " + bytesSentVfc)
+      println("Bytes summary for old method of updating players: " + bytesSentOld)
+    }
     delay.execute(() => client.sendEvent(eventName.toString, data.toJsonString))
   }
 

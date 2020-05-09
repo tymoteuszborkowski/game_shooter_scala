@@ -22,6 +22,8 @@ libraryDependencies ++= Seq(
   "org.mockito" % "mockito-all" % "1.10.19",
   "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.1",
   "com.fasterxml.jackson.core" % "jackson-databind" % "2.10.3",
-  "com.corundumstudio.socketio" % "netty-socketio" % "1.7.18"
+  "com.corundumstudio.socketio" % "netty-socketio" % "1.7.18",
+  "org.scalatest" %% "scalatest" % "3.3.0-SNAP2" % Test
+
 
 )

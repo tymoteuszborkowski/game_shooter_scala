@@ -7,22 +7,19 @@ import pl.tymoteuszborkowski.controls.Controls
 
 class Player(val id: UUID,
              var controls: Controls,
-             val color: Color,
-             var health: Int = 10) extends Identifiable {
+             val color: Color) extends Identifiable {
 
   private var ship: Option[Ship] = Option.empty
-
 
   def setShip(ship: Ship): Unit = {
     this.ship = Option(ship)
   }
 
   def noticeHit(): Unit = {
-    if (health <= 0) {
+    if (ship.isDefined && ship.get.health.level <= 0) {
       ship = Option.empty
-      health = 10
     } else {
-      health -= 1
+      ship.get.health.level  -= 1
     }
   }
 

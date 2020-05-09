@@ -8,12 +8,16 @@ import scala.collection.JavaConverters._
 import java.util.Optional
 import java.util.UUID
 
+import scala.collection.mutable
+
 trait Container[T <: Identifiable] {
   def add(toAdd: T): Unit
 
   def getAll: util.ArrayList[T]
  
   def stream: util.stream.Stream[T] = getAll.stream()
+
+  def buffer: mutable.Buffer[T] = getAll.asScala
 
   def update(): Unit
 

@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Polygon, Vector2}
 import pl.tymoteuszborkowski.controls.Controls
 import pl.tymoteuszborkowski.utils.Vectors
-import com.badlogic.gdx.math.Vector2
+import pl.tymoteuszborkowski.vfc.ConsistencyIdentifiable
+import pl.tymoteuszborkowski.vfc.attributes.{ConsistencyAttribute, Health}
 
 
 object Ship {
@@ -23,9 +24,10 @@ object Ship {
   def getMiddle = new Vector2(MIDDLE)
 }
 
-class Ship(val owner: Player,
-           val startingPosition: Vector2 = new Vector2(0, 0),
-           val startingRotation: Float = 0f) extends Visible {
+case class Ship(owner: Player,
+                startingPosition: Vector2 = new Vector2(0, 0),
+                startingRotation: Float = 0f,
+                health: Health = Health()) extends Visible with ConsistencyIdentifiable {
 
   private val shape: Polygon = initializeShape()
   private val velocity: Vector2 = new Vector2(0, 0)
@@ -87,6 +89,8 @@ class Ship(val owner: Player,
     val y = delta * velocity.y
     shape.translate(x, y)
     shape.rotate(rotationVelocity)
+
+    position = (shape.getX, shape.getY)
   }
 
   private def applyShootingPossibility(): Unit = {
@@ -116,4 +120,9 @@ class Ship(val owner: Player,
     this.rotationVelocity = rotationVelocity
   }
 
+  override var position: (Float, Float) = (shape.getX, shape.getY)
+
+  override val id: UUID = owner.id
+
+  override def getAllConsistencyAttributes: List[ConsistencyAttribute] = List(health)
 }

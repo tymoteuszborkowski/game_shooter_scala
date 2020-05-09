@@ -7,6 +7,9 @@ scalaVersion := "2.12.8"
 
 libraryDependencies ++= Seq(
   "com.badlogicgames.gdx" % "gdx-backend-lwjgl" % "1.9.10" % Test,
-  "io.socket" % "socket.io-client" % "1.0.0"
+  "io.socket" % "socket.io-client" % "1.0.0",
+  "org.scalatest" %% "scalatest" % "3.3.0-SNAP2" % Test
+
+
 
 )
