@@ -13,16 +13,19 @@ case class ConsistencyScale(var delay: Float = 0,
                             var difference: Float = 0) {
 
   private var lastUpdateTimestamp: Long = 0
+  private var lastAverageRelativeAttributeLevel: Float = 0
 
   def refreshScale(identifiable: ConsistencyIdentifiable): Unit = {
     delay = 0
     lostUpdates = 0
-    difference = identifiable.calculateAverageRelativeAttributeLevel()
+    difference = 0
     lastUpdateTimestamp = System.currentTimeMillis()
+    lastAverageRelativeAttributeLevel = identifiable.calculateAverageRelativeAttributeLevel()
   }
 
-  def addLostUpdate(): Unit = {
+  def addLostUpdate(identifiable: ConsistencyIdentifiable): Unit = {
     delay += (System.currentTimeMillis() - lastUpdateTimestamp) / 1000
     lostUpdates += 1
+    difference = Math.abs(lastAverageRelativeAttributeLevel - identifiable.calculateAverageRelativeAttributeLevel())
   }
 }

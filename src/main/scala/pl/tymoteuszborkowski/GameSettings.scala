@@ -9,5 +9,4 @@ object GameSettings {
   val WORLD_HEIGHT = 600f
 
   val GameZones: Array[Zone] = ZoneGenerator.generateFourZones()
-
 }

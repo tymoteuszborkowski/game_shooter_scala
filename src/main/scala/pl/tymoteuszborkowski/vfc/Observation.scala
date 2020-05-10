@@ -9,7 +9,7 @@ case class Observation(observed: ConsistencyIdentifiable,
       consistencyScale.refreshScale(observed)
       true
     } else {
-      consistencyScale.addLostUpdate()
+      consistencyScale.addLostUpdate(observed)
       false
     }
   }
@@ -17,7 +17,7 @@ case class Observation(observed: ConsistencyIdentifiable,
   private def shouldUpdate(): Boolean = {
     if (consistencyScale.lostUpdates >= zoneWithin.maxConsistencyScale.lostUpdates
         || consistencyScale.delay >= zoneWithin.maxConsistencyScale.delay
-        || consistencyScale.difference <= zoneWithin.maxConsistencyScale.difference) {
+        || consistencyScale.difference >= zoneWithin.maxConsistencyScale.difference) {
 
       return true
     }
