@@ -11,17 +11,17 @@ class ZoneGeneratorTest extends AnyFlatSpec with Matchers with GivenWhenThen wit
     val zones = ZoneGenerator.generateFourZones()
 
     Then("Zones have concrete range")
-    assert(zones(0).range.startVelocity == (0, 0))
-    assert(zones(0).range.endVelocity == (200, 150))
+    assert(zones(0).range.startPosition == (0, 0))
+    assert(zones(0).range.endPosition == (200, 150))
 
-    assert(zones(1).range.startVelocity == (200, 150))
-    assert(zones(1).range.endVelocity == (400, 300))
+    assert(zones(1).range.startPosition == (200, 150))
+    assert(zones(1).range.endPosition == (400, 300))
 
-    assert(zones(2).range.startVelocity == (400, 300))
-    assert(zones(2).range.endVelocity == (600, 450))
+    assert(zones(2).range.startPosition == (400, 300))
+    assert(zones(2).range.endPosition == (600, 450))
 
-    assert(zones(3).range.startVelocity == (600, 450))
-    assert(zones(3).range.endVelocity == (800, 600))
+    assert(zones(3).range.startPosition == (600, 450))
+    assert(zones(3).range.endPosition == (800, 600))
   }
 
   "Zone generator " should " generate properly 4 zones with correct consistency" in {

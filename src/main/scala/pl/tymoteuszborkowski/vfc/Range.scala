@@ -1,14 +1,14 @@
 package pl.tymoteuszborkowski.vfc
 
-case class Range(startVelocity: (Int, Int),
-                 endVelocity: (Int, Int)) {
+case class Range(startPosition: (Int, Int),
+                 endPosition: (Int, Int)) {
 
-  def getStartX: Int = startVelocity._1
+  def getStartX: Int = startPosition._1
 
-  def getStartY: Int = startVelocity._2
+  def getStartY: Int = startPosition._2
 
-  def getEndX: Int = endVelocity._1
+  def getEndX: Int = endPosition._1
 
-  def getEndY: Int = endVelocity._2
+  def getEndY: Int = endPosition._2
 
 }
