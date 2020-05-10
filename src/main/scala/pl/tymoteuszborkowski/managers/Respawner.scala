@@ -1,7 +1,7 @@
 package pl.tymoteuszborkowski.managers
 
 import com.badlogic.gdx.math.Vector2
-import pl.tymoteuszborkowski.container.Container
+import pl.tymoteuszborkowski.container.{ConsistencyViewsContainer, Container}
 import pl.tymoteuszborkowski.domain.{Player, Ship}
 
 import scala.util.Random
@@ -11,8 +11,9 @@ object Respawner {
 }
 
 class Respawner[PlayerType <: Player](val playersContainer: Container[PlayerType],
-                val widthBound: Float,
-                val heightBound: Float) {
+                                      val consistencyViewsContainer: ConsistencyViewsContainer[PlayerType],
+                                      val widthBound: Float,
+                                      val heightBound: Float) {
 
   def respawn(): Unit = {
     playersContainer
@@ -20,9 +21,12 @@ class Respawner[PlayerType <: Player](val playersContainer: Container[PlayerType
       .filter(player => player.getShip.isEmpty)
       .forEach(respawnFor)
   }
+
   def respawnFor(player: PlayerType): Unit = {
     player.setShip(new Ship(player, randomRespawnPoint, 0))
+    consistencyViewsContainer.refreshConsistencyViews()
   }
+
   private def randomRespawnPoint =
     new Vector2(Respawner.random.nextInt(widthBound.round), Respawner.random.nextInt(heightBound.round))
 

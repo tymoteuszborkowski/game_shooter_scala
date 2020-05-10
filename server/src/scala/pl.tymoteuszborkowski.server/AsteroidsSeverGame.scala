@@ -17,7 +17,8 @@ class AsteroidsSeverGame extends Game {
     val arena = new Arena(WORLD_WIDTH, WORLD_HEIGHT)
     val bulletsContainer = new BulletsContainer
     val playersContainer = new PlayersContainer[RemotePlayer]
-    val respawner = new Respawner[RemotePlayer](playersContainer, WORLD_WIDTH, WORLD_HEIGHT)
+    val consistencyViewsContainer = new ConsistencyViewsContainer[RemotePlayer](playersContainer)
+    val respawner = new Respawner[RemotePlayer](playersContainer, consistencyViewsContainer, WORLD_WIDTH, WORLD_HEIGHT)
     val collider = new Collider[RemotePlayer](playersContainer, bulletsContainer)
 
     val env = System.getenv
@@ -25,7 +26,6 @@ class AsteroidsSeverGame extends Game {
     val port = env.getOrDefault("PORT", "8080").toInt
     val server = new SocketIoServer(host, port, new StateIndexByClient(), new Delay(100))
 
-    val consistencyViewsContainer = new ConsistencyViewsContainer[RemotePlayer](playersContainer)
     asteroids = new AsteroidsServerScreen(server, playersContainer, bulletsContainer, arena, respawner, collider,
       consistencyViewsContainer)
     setScreen(asteroids)
