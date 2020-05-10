@@ -79,34 +79,35 @@ class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClien
   }
 
   def vectorFieldConsistencyBroadcastDto(gameState: GameStateDto,
-                                      consistencyViewsContainer: ConsistencyViewsContainer[RemotePlayer],
+                                         consistencyViewsContainer: ConsistencyViewsContainer[RemotePlayer],
                                          client: SocketIOClient): Dto = {
 
-      val clientViewOption = consistencyViewsContainer.consistencyViews.find(_.observer.id.equals(client.getSessionId))
-      val indexedDtoOption = clientViewOption.map { clientView =>
-        val observerId = clientView.observer.id.toString
-        val playersIdsToUpdate = clientView
-          .observedObjects
-          .filter(_.shouldUpdate())
-          .map(_.observed.id.toString)
+    val clientViewOption = consistencyViewsContainer.consistencyViews.find(_.observer.id.equals(client.getSessionId))
+    val indexedDtoOption = clientViewOption.map { clientView =>
+      val observerId = clientView.observer.id.toString
 
-        val updatedPlayers = gameState
-          .players.asScala
-          .filter(player => playersIdsToUpdate.contains(player.id) || player.id == observerId)
-          .toList.asJava
+      val playersIdsToUpdate: List[String] = clientView
+        .observedObjects
+        .filter(_.performedUpdate())
+        .map(_.observed.id.toString)
 
-        val updatedBullets = gameState
-          .bullets
-          .asScala
-          .filter(bullet => playersIdsToUpdate.contains(bullet.shooterId) || bullet.shooterId == observerId)
-          .toList.asJava
+      val updatedPlayers = gameState
+        .players.asScala
+        .filter(player => playersIdsToUpdate.contains(player.id) || player.id == observerId)
+        .toList.asJava
 
-        val updatedGameState = gameState.copy(players = updatedPlayers, bullets = updatedBullets)
-        wrapWithIndex(updatedGameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto]
-      }
+      val updatedBullets = gameState
+        .bullets
+        .asScala
+        .filter(bullet => playersIdsToUpdate.contains(bullet.shooterId) || bullet.shooterId == observerId)
+        .toList.asJava
 
-     indexedDtoOption
-        .getOrElse(wrapWithIndex(gameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto])
+      val updatedGameState = gameState.copy(players = updatedPlayers, bullets = updatedBullets)
+      wrapWithIndex(updatedGameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto]
+    }
+
+    indexedDtoOption
+      .getOrElse(wrapWithIndex(gameState, stateIndexByClient.lastIndexFor(client.getSessionId)).asInstanceOf[Dto])
 
   }
 
@@ -196,7 +197,7 @@ class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClien
   }
 
   private def sendEvent(client: ClientOperations, eventName: Event, data: Dto): Unit = {
-    if(eventName == Event.OTHER_PLAYER_DISCONNECTED){
+    if (eventName == Event.OTHER_PLAYER_DISCONNECTED) {
       println("Bytes summary for Vector field Consistency model: " + bytesSentVfc)
       println("Bytes summary for old method of updating players: " + bytesSentOld)
     }

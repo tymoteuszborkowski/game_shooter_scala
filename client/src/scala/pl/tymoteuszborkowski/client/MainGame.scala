@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReentrantLock
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.FillViewport
 import com.badlogic.gdx.{Game, Screen}
+import pl.tymoteuszborkowski.GameSettings
 import pl.tymoteuszborkowski.GameSettings._
 import pl.tymoteuszborkowski.client.connection.SocketIOClient
 import pl.tymoteuszborkowski.client.connection.synchronization.LocalStateSynchronizer
@@ -44,7 +45,7 @@ class MainGame extends Game {
     val localStateSynchronizer: LocalStateSynchronizer = new LocalStateSynchronizer
     val client = new SocketIOClient(protocol, host, port, localStateSynchronizer, new Delay(100),
       new ReentrantLock())
-    val zones = ZoneGenerator.generateFourZones()
+    val zones = GameSettings.GameZones
 
     asteroids = new GameScreen(localControls, client, viewport,
       shapeRenderer, playersContainer, bulletsContainer, playersRenderer,

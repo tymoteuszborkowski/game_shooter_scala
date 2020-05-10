@@ -8,6 +8,6 @@ object GameSettings {
   val WORLD_WIDTH = 800f
   val WORLD_HEIGHT = 600f
 
-  val GameZones: Array[Zone] = ZoneGenerator.generateZones(4)
+  val GameZones: Array[Zone] = ZoneGenerator.generateFourZones()
 
 }

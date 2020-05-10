@@ -12,16 +12,17 @@ case class ConsistencyScale(var delay: Float = 0,
                             var lostUpdates: Int = 0,
                             var difference: Float = 0) {
 
+  private var lastUpdateTimestamp: Long = 0
+
   def refreshScale(identifiable: ConsistencyIdentifiable): Unit = {
     delay = 0
     lostUpdates = 0
     difference = identifiable.calculateAverageRelativeAttributeLevel()
+    lastUpdateTimestamp = System.currentTimeMillis()
   }
 
   def addLostUpdate(): Unit = {
-    val newUpdateTimestamp = System.currentTimeMillis()
-
-    delay = (newUpdateTimestamp - (delay / 1000)) / 1000
+    delay += (System.currentTimeMillis() - lastUpdateTimestamp) / 1000
     lostUpdates += 1
   }
 }

@@ -8,7 +8,6 @@ case class ConsistencyView(observer: ConsistencyIdentifiable,
   def updateView(): Unit =
     observedObjects.foreach(observation => {
       updateZone(observation)
-      observation.update()
     })
 
 
