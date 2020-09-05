@@ -1,7 +1,6 @@
-package pl.tymoteuszborkowski.vfc.utils
+package pl.tymoteuszborkowski.vfc
 
 import pl.tymoteuszborkowski.GameSettings.GameZones
-import pl.tymoteuszborkowski.vfc.{ConsistencyIdentifiable, Zone}
 
 object ZoneUtils {
 

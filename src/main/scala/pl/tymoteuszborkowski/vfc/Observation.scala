@@ -25,3 +25,6 @@ case class Observation(observed: ConsistencyIdentifiable,
     false
   }
 }
+
+
+

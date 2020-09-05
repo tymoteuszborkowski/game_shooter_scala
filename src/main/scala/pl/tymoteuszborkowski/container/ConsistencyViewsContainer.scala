@@ -3,8 +3,7 @@ package pl.tymoteuszborkowski.container
 import java.util.UUID
 
 import pl.tymoteuszborkowski.domain.{Player, Ship}
-import pl.tymoteuszborkowski.vfc.utils.ZoneUtils
-import pl.tymoteuszborkowski.vfc.{ConsistencyScale, Observation, ConsistencyIdentifiable, ConsistencyView}
+import pl.tymoteuszborkowski.vfc.{ConsistencyIdentifiable, ConsistencyScale, ConsistencyView, Observation, ZoneUtils}
 
 import scala.collection.mutable
 

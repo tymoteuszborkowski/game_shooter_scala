@@ -6,7 +6,7 @@ import pl.tymoteuszborkowski.domain.{Arena, RemotePlayer}
 import pl.tymoteuszborkowski.dto.mapper.{ControlsMapper, GameStateMapper, PlayerMapper}
 import pl.tymoteuszborkowski.managers.{Collider, Respawner}
 import pl.tymoteuszborkowski.server.connection.Server
-import pl.tymoteuszborkowski.vfc.utils.VfcDebugUtil
+import pl.tymoteuszborkowski.utils.VfcDebugUtil
 
 class AsteroidsServerScreen(val server: Server,
                             val playersContainer: PlayersContainer[RemotePlayer],

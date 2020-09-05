@@ -1,15 +1,10 @@
 package pl.tymoteuszborkowski.vfc
 
-import pl.tymoteuszborkowski.vfc.utils.ZoneUtils
-
 case class ConsistencyView(observer: ConsistencyIdentifiable,
                            observedObjects: List[Observation]) {
 
   def updateView(): Unit =
-    observedObjects.foreach(observation => {
-      updateZone(observation)
-    })
-
+    observedObjects.foreach(observation => updateZone(observation))
 
   private def updateZone(observation: Observation): Unit = {
     val zone = ZoneUtils.pickCorrespondingZone(observer, observation.observed)

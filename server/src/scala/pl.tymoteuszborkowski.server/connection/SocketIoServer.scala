@@ -30,7 +30,7 @@ class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClien
   private var playerLeftHandler: Consumer[UUID] = _
 
 
-  //todo remove - test variables to analyze sent bytes in both methods (old and vector field consistency)
+  //test variables to analyze sent bytes in both methods (old and vector field consistency)
   private var bytesSentVfc: Long = 0
   private var bytesSentOld: Long = 0
 
@@ -200,6 +200,7 @@ class SocketIoServer(val delay: Delay, val stateIndexByClient: StateIndexByClien
     if (eventName == Event.OTHER_PLAYER_DISCONNECTED) {
       println("Bytes summary for Vector field Consistency model: " + bytesSentVfc)
       println("Bytes summary for old method of updating players: " + bytesSentOld)
+      
     }
     delay.execute(() => client.sendEvent(eventName.toString, data.toJsonString))
   }

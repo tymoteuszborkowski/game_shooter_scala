@@ -1,4 +1,4 @@
-package pl.tymoteuszborkowski.vfc.utils
+package pl.tymoteuszborkowski.utils
 
 import pl.tymoteuszborkowski.container.ConsistencyViewsContainer
 import pl.tymoteuszborkowski.domain.Player

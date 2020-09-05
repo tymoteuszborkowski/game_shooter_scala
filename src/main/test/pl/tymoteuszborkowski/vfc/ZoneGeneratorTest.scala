@@ -24,37 +24,5 @@ class ZoneGeneratorTest extends AnyFlatSpec with Matchers with GivenWhenThen wit
     assert(zones(3).range.endPosition == (800, 600))
   }
 
-  "Zone generator " should " generate properly 4 zones with correct consistency" in {
-    When("Generating zones")
-    val zones = ZoneGenerator.generateZones(4)
-
-    Then("Zones have concrete range")
-    assert(zones(0).maxConsistencyScale.delay == 0)
-    assert(zones(0).maxConsistencyScale.lostUpdates == 0)
-    assert(zones(0).maxConsistencyScale.difference == 0)
-
-    assert(zones(1).maxConsistencyScale.delay == 0.1F)
-    assert(zones(1).maxConsistencyScale.lostUpdates == 1)
-    assert(zones(1).maxConsistencyScale.difference == 0.1F)
-
-    assert(zones(2).maxConsistencyScale.delay == 0.4F)
-    assert(zones(2).maxConsistencyScale.lostUpdates == 4)
-    assert(zones(2).maxConsistencyScale.difference == 0.4F)
-
-    assert(zones(3).maxConsistencyScale.delay == 0.9F)
-    assert(zones(3).maxConsistencyScale.lostUpdates == 9)
-    assert(zones(3).maxConsistencyScale.difference == 0.9F)
-  }
-
-  "Zone generator " should " generate properly 4 zones with valid ids" in {
-    When("Generating zones")
-    val zones = ZoneGenerator.generateZones(4)
-
-    Then("Zones have concrete range")
-    assert(zones(0).id == 1)
-    assert(zones(1).id == 2)
-    assert(zones(2).id == 3)
-    assert(zones(3).id == 4)
-  }
 
 }

@@ -29,3 +29,7 @@ case class ConsistencyScale(var delay: Float = 0,
     difference = Math.abs(lastAverageRelativeAttributeLevel - identifiable.calculateAverageRelativeAttributeLevel())
   }
 }
+
+
+
+
